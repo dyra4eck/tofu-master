@@ -8,13 +8,13 @@ terraform {
 }
 
 provider "proxmox" {
-	endpoint = "https://192.168.122.223:8006/"
+	endpoint = var.proxmox_endpoint
 	insecure = true
 }
 
 resource "proxmox_virtual_environment_container" "first" {
 	node_name 	 = "pve" 	# имя узла в ProxmoxVE
-	vm_id				 = 110
+	vm_id				 = var.vm_id_mip-test-git-v16
 	unprivileged = true
 	
 	initialization {
@@ -25,7 +25,7 @@ resource "proxmox_virtual_environment_container" "first" {
 			}
 		}
 		user_account {
-			password = "P@ssw0rd"
+			password = var.root_password
 			keys		 = [trimspace(file("~/.ssh/id_ed25519.pub"))]
 		}
 	}

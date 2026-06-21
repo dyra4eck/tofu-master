@@ -1,2 +1,6 @@
 secret.txt
+*.tfvars
+.terraform/
+*.tfstate
+*.tfstate.*
 .*
