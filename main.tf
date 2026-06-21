@@ -1,17 +1,3 @@
-terraform {
-	required_providers {
-		proxmox = {
-			source = "bpg/proxmox"
-			version = "~> 0.110"
-		}
-	}
-}
-
-provider "proxmox" {
-	endpoint = var.proxmox_endpoint
-	insecure = true
-}
-
 resource "proxmox_virtual_environment_container" "this" {
 	for_each = var.containers	
 	node_name 	 = "pve" 	# имя узла в ProxmoxVE
@@ -43,12 +29,6 @@ resource "proxmox_virtual_environment_container" "this" {
 	operating_system {
 		template_file_id = each.value.template_file_id
 		type						 = each.value.type
-	}
-}
-
-output "containers_ip" {
-	value = {
-		for name, ct in proxmox_virtual_environment_container.this : name => ct.ipv4
 	}
 }
 
