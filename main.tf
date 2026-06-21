@@ -12,13 +12,14 @@ provider "proxmox" {
 	insecure = true
 }
 
-resource "proxmox_virtual_environment_container" "first" {
+resource "proxmox_virtual_environment_container" "this" {
+	for_each = var.containers	
 	node_name 	 = "pve" 	# имя узла в ProxmoxVE
-	vm_id				 = var.vm_id_mip-test-git-v16
+	vm_id				 = each.value.vm_id
 	unprivileged = true
 	
 	initialization {
-		hostname = var.hostname_first
+		hostname = each.value.hostname
 		ip_config {
 			ipv4 {
 				address = "dhcp"
@@ -32,7 +33,7 @@ resource "proxmox_virtual_environment_container" "first" {
 
 	disk {
 		datastore_id = "local-lvm"	# это херня в ProxmoxVE — здесь будет корневая ФС контейнера
-		size				 = var.disk_size_first
+		size				 = each.value.disk_size
 	}
 
 	network_interface {
@@ -40,11 +41,14 @@ resource "proxmox_virtual_environment_container" "first" {
 	}
 
 	operating_system {
-		template_file_id = var.os_template_file_id_first
-		type						 = var.os_type_first
+		template_file_id = each.value.template_file_id
+		type						 = each.value.type
 	}
 }
 
-output "container_ip" {
-	value = proxmox_virtual_environment_container.first.ipv4
+output "containers_ip" {
+	value = {
+		for name, ct in proxmox_virtual_environment_container.this : name => ct.ipv4
+	}
 }
+
