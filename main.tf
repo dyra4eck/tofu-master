@@ -18,7 +18,7 @@ resource "proxmox_virtual_environment_container" "first" {
 	unprivileged = true
 	
 	initialization {
-		hostname = "mip-test-git-v16"
+		hostname = var.hostname_first
 		ip_config {
 			ipv4 {
 				address = "dhcp"
@@ -32,7 +32,7 @@ resource "proxmox_virtual_environment_container" "first" {
 
 	disk {
 		datastore_id = "local-lvm"	# это херня в ProxmoxVE — здесь будет корневая ФС контейнера
-		size				 = 4
+		size				 = var.disk_size_first
 	}
 
 	network_interface {
@@ -40,8 +40,8 @@ resource "proxmox_virtual_environment_container" "first" {
 	}
 
 	operating_system {
-		template_file_id = "local:vztmpl/debian-13-standard_13.1-2_amd64.tar.zst"
-		type						 = "debian"
+		template_file_id = var.os_template_file_id_first
+		type						 = var.os_type_first
 	}
 }
 
