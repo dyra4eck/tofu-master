@@ -11,10 +11,15 @@ variable "root_password" {
 
 variable "containers" {
 	type = map(object({
-		vm_id		 				 = number
-		hostname 				 = string
-		disk_size				 = number
-		template_file_id = string
-		type 						 = string
+		vm_id = number
+		hostname = string
+		disk_size = number
+		template = string
+		type = string
 	}))
+}
+
+variable "templates" {
+	type = map(string)
+	description = "CT-шаблоны для скачивания"
 }
