@@ -51,13 +51,8 @@ resource "proxmox_virtual_environment_vm" "debian_vm" {
 	initialization {
 		ip_config {
 			ipv4 {
-				address = "192.168.122.140/24"
-				gateway = "192.168.122.1"
+				address = "192.168.122."
 			}
-		}
-
-		dns {
-			servers = ["192.168.122.1", "1.1.1.1"]
 		}
 
 		user_account {
